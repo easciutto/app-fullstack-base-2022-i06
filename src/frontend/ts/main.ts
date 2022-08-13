@@ -1,4 +1,4 @@
-declare const M;
+declare const M; //documentar
 class Main implements EventListenerObject, ResponseLister {
     public listaPersonas: Array<Persona> = new Array();
     public etidadesAcciones: Array<Acciones> = new Array();
@@ -76,11 +76,13 @@ class Main implements EventListenerObject, ResponseLister {
         
     }
     public handleEvent(e:Event): void {
+        //console.log(e.target);
+        //console.log(e.type);
         let objetoEvento = <HTMLInputElement>e.target;
       
         if (e.type == "click" && objetoEvento.id.startsWith("cb_")) {
 
-          //  console.log(objetoEvento.id,)
+            //console.log(objetoEvento.id)
             console.log("Se hizo click para prender o apagar")
             let datos = { "id": objetoEvento.id.substring(3), "state": objetoEvento.checked };
             this.framework.ejecutarRequest("POST","http://localhost:8000/actualizar", this,datos)
@@ -104,7 +106,6 @@ class Main implements EventListenerObject, ResponseLister {
         }
     }
 }
-
 window.addEventListener("load", () => {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems,"");
@@ -115,6 +116,16 @@ window.addEventListener("load", () => {
     let btn2 = document.getElementById("btnDoble");
     let main: Main = new Main();
     main.nombre = "Matias"
+    
+    let texto = document.getElementById("textarea_1");
+    //texto.innerHTML = main.listaPersonas[0].mostrar();
+    /*for (let i in main.etidadesAcciones) {
+        texto.innerHTML += JSON.stringify(main.etidadesAcciones[i]);    
+    }; */
+   for (let i in main.listaPersonas) {
+        texto.innerHTML += JSON.stringify(main.listaPersonas[i]);    
+    };
+   
 
     btn2.addEventListener("dblclick", main);
     btn.addEventListener("click", main);
