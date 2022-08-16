@@ -5,7 +5,7 @@ var PORT    = 3000;
 var express = require('express');
 var app     = express();
 var utils   = require('./mysql-connector');
-//datos mios a depurar
+
 var bodyParser = require('body-parser');
 
 
@@ -15,14 +15,10 @@ app.use(bodyParser.json());
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/*let persona = require('./datos1.js');
-console.log(persona.nombre + ' ' + persona.apellido); */
-
-var dispositivos = require('./datos.js');
-
+//var dispositivos = require('./datos.js');
 //console.log(dispositivos[2].description);
 
-// Funcion que me permite buscar un valor de la clave "id" en el objeto dispositivos
+/*// Funcion que me permite buscar un valor de la clave "id" en el objeto dispositivos
 function getVal(id) {
     let obj = dispositivos.filter(item => item.id === id);
     return obj[0];
@@ -32,16 +28,77 @@ function getVal(id) {
 console.log(valor);
 console.log(typeof valor); */
 
-
-
 // to parse application/json
 app.use(express.json()); 
 // to serve static files
 app.use(express.static('/home/node/app/static/'));
 
 //=======[ Main module code ]==================================================
+
+// Método GET que devuelve la lista de dispositivos
+app.get('/devices/', function(req, res) {
+    console.log("Se recibe solicitud de dispositivos");
+
+    // query: sentencia SQL - callback
+    utils.query('SELECT * FROM Devices', function(err,respuesta){
+        if (err){
+            res.send(err).status(400);
+            return;
+        }
+        setTimeout(function(){
+            res.send(JSON.stringify(respuesta)).status(200);
+        }, 1000);
+
+    });
+    
+
+// Método GET que recibe por parámetro un id y devuelve un string con el dispositivo que tenga ese id
+app.get('/devices/:Id_input', function (req, res, next) { 
+    let id = parseInt(req.params.Id_input);
+    //console.log(id);
+    //console.log(typeof id);
+    // query: sentencia SQL - [parámetros] - callback
+    utils.query('SELECT * FROM Devices where id=?',[id],function(err,respuesta){
+        if (err){
+            res.send(err).status(400);
+            return;
+        }
+        console.log(respuesta);
+        res.send(JSON.stringify(respuesta)).status(200);
+    });
+});
+
+    /*let dispo = getVal(id);
+    //console.log(dispo);
+    if(dispo!=undefined){
+        res.send(JSON.stringify(dispo)).status(200);
+    }else{ 
+        res.send("Id de dispositivo erróneo").status(400)}
+    }); */
+
+//Método POST que espera recibir {id:1,state:1/0}, impacta el cambio y devuelve respuesta
 app.post("/actualizar",function(req,res){
-    console.log("Llegue al servidor");
+    console.log("Se recibe solicitud POST");
+    if(req.body.id==undefined || req.body.state==undefined){
+        res.send("ERROR");
+    } else {
+    
+        //console.log(Object.keys(req.body).length); //para validar cantidad de keys que vienen en el body.
+        utils.query('Update Devices set state=? where id=?',[req.body.state, req.body.id],function(err,respuesta){
+            if (err){
+                res.send(err).status(400);
+                return;
+            }
+            //console.log(respuesta);
+            res.send("actualizo").status(200);
+        });
+    };
+});
+
+
+/*//Método POST que espera recibir {id:1,state:1/0}, impacta el cambio y devuelve respuesta
+app.post("/actualizar",function(req,res){
+    console.log("Se recibe solicitud POST");
     //console.log(Object.keys(req.body).length); //para validar cantidad de keys que vienen en el body.
         
     if(req.body.id!=undefined&& req.body.state!=undefined){
@@ -49,13 +106,7 @@ app.post("/actualizar",function(req,res){
         let id = parseInt(req.body.id);
         let dispo = getVal(id);
         dispo.state = req.body.state;
-        /*for (let i in dispositivos){
-            if (dispositivos[i].id === id) {
-                console.log("iteracion "+ i);
-                dispositivos[i].state = dispo.state;
-                
-            }
-        }*/
+        
         res.send("actualizo");
     }else{
         res.send("ERROR");
@@ -63,25 +114,7 @@ app.post("/actualizar",function(req,res){
 
    
 });
-app.get('/devices/', function(req, res) {
-   
-    console.log("Alguien pidio devices!");
-    setTimeout(function(){
-        res.send(JSON.stringify(dispositivos)).status(200);
-    }, 2000);
-
-// Ejercicio 5: Crear un método GET que reciba por parámetro un id y devuelva un JSON
-// con el dispositivo que tenga ese id
-app.get('/devices/:Id_input', function (req, res, next) { 
-    let id = parseInt(req.params.Id_input);
-    console.log(id);
-    console.log(typeof id);
-    let dispo = getVal(id);
-    console.log(dispo);
-    //console.log(typeof valor);
-    res.send(JSON.stringify(dispo)).status(200);
-    }); 
-
+*/
 
 });
 app.listen(PORT, function () {

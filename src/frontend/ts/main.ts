@@ -40,7 +40,9 @@ class Main implements EventListenerObject, ResponseLister {
             let listaDispositivos:string = `<ul class="collection">`
             for (let disp of resputa) {
                 listaDispositivos += ` <li class="collection-item avatar">`;
-                if (disp.type == 1) {  //se asigna una imagen distinta, según el tipo de dispositivo.
+                if (disp.type == 0) {  //se asigna una imagen distinta, según el tipo de dispositivo.
+                    listaDispositivos += `<img src="../static/images/velador.png" alt="" class="circle">`;
+                } else if (disp.type == 1) {  
                     listaDispositivos += `<img src="../static/images/lightbulb.png" alt="" class="circle">`;
                 } else if (disp.type == 2) {
                     listaDispositivos += `<img src="../static/images/window.png" alt="" class="circle">`;
