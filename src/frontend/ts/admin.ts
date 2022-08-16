@@ -1,11 +1,17 @@
-class Administrador extends Persona implements Acciones{
-    public tipo: string;
+//Clase Administrador: hereda la clase Persona e implementa la interfaz Acciones.
 
-  
+class Administrador extends Persona implements Acciones{
+  public tipo: string;
+
+  //Por herencia de la clase Persona, se puede utilizar el método mostrar() para recuperar una propiedad del objeto.
+
   public mostrar(): string {
    
     return "soy admin "+super.mostrar();
   }
+
+  //Se define una respuesta para cada una de las funciones de la interfaz Acciones.
+
   consultar(): string{
     return "Puede";
   }

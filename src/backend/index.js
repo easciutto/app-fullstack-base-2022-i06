@@ -8,6 +8,7 @@ var utils   = require('./mysql-connector');
 //datos mios a depurar
 var bodyParser = require('body-parser');
 
+
 // support parsing of application/json type post data
 app.use(bodyParser.json());
 
@@ -17,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /*let persona = require('./datos1.js');
 console.log(persona.nombre + ' ' + persona.apellido); */
 
-let dispositivos = require("./datos.js");
+var dispositivos = require('./datos.js');
 
 //console.log(dispositivos[2].description);
 
@@ -41,13 +42,20 @@ app.use(express.static('/home/node/app/static/'));
 //=======[ Main module code ]==================================================
 app.post("/actualizar",function(req,res){
     console.log("Llegue al servidor");
-    console.log(Object.keys(req.body).length);
+    //console.log(Object.keys(req.body).length); //para validar cantidad de keys que vienen en el body.
         
     if(req.body.id!=undefined&& req.body.state!=undefined){
-        console.log(req.body);
+        console.log(req.body.state);
         let id = parseInt(req.body.id);
         let dispo = getVal(id);
         dispo.state = req.body.state;
+        /*for (let i in dispositivos){
+            if (dispositivos[i].id === id) {
+                console.log("iteracion "+ i);
+                dispositivos[i].state = dispo.state;
+                
+            }
+        }*/
         res.send("actualizo");
     }else{
         res.send("ERROR");
