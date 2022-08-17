@@ -33,6 +33,16 @@ app.use(express.json());
 // to serve static files
 app.use(express.static('/home/node/app/static/'));
 
+
+/* utils.query('Update Devices set type=? where id=?',[2,2],function(err,respuesta){
+    if (err){
+        return;
+    }
+    console.log(respuesta);
+}); */
+
+
+
 //=======[ Main module code ]==================================================
 
 // Método GET que devuelve la lista de dispositivos

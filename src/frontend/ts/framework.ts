@@ -40,6 +40,7 @@ class FrameWork{
        }        
   }
 
+  //=======[ Método para recuperar elemento de la pantalla ]==================================
   public recuperarElemento(id: string): HTMLElement{
     let element = document.getElementById(id);
     return element;

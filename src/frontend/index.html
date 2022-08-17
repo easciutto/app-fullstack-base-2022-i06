@@ -28,7 +28,7 @@
             <!-- Page Body -->
             <div id="modal1" class="modal">
                 <div class="modal-content">
-                <label>nombre</label>
+                <label>validar nombre</label>
                   <input type="text">
                 </div>
                 <div class="modal-footer">
@@ -67,24 +67,101 @@
                 <div id="caja" style="background-color: #4d4d85;"> 
              
                 </div>
+                
                 <div class="row">
                     <div class="input-field col s12 m12 l12 xl12">
-                        <textarea id="textarea_1" class="materialize-textarea" style="height: 150px;" readonly></textarea>
-                    </div>
-                    <div class="col s4 m4 l2 xl2">
-                        <div class="input-field col s12">
-                            <select multiple>
-                              <option value="" disabled selected>Choose your option</option>
-                              <option value="1">Option 1</option>
-                              <option value="2">Option 2</option>
-                              <option value="3">Option 3</option>
-                            </select>
-                            <label>Materialize Multiple Select</label>
-                          </div>
-                        <button id="btnSaludar" class="btn waves-effect waves-light button-view red"><i class="material-icons left">directions_run</i>Salida</button>
-                        <button id="btnDoble2" class="btn waves-effect waves-light button-view red"><i class="material-icons left">cloud</i>Doble</button>
+                        <textarea id="textarea_1" class="materialize-textarea" style="height: 8px;" readonly></textarea>
                     </div>
                 </div>
+                <!-- Módulo ABM de dispositivos (Modificar / Crear /Borrar)-->
+                <h4 id="abm">ABM de Dispositivos</h4>
+                <div class="row">
+                    <div class="col s4 m4 xl5 borde">
+                        <div class="=row">
+                            <div class="col s12 m12 l12 xl12">
+                                <label>Ingrese ID a modificar</label>
+                                <input type="number" id="mod_id">
+                            <span class="col s0 m0 xl0"></span>
+                            </div>                                                         
+                        </div>
+                        <div class="=row">
+                            <div class="col s12 m12 xl12">
+                                <label>Nuevo nombre</label>
+                                <input type="text" id="mod_nombre">
+                            </div>
+                        </div>
+                        <div class="=row">
+                            <div class="col s12 m12 xl12">
+                                <label>Nueva descripción</label>
+                                <input type="text" id="mod_descrip">
+                            </div>
+                        </div>
+                        <div class="=row">
+                            <div class="input-field col s12" id="mod_tipo">
+                                <select>
+                                  <option value="" disabled selected>Opciones</option>
+                                  <option value="0">velador</option>
+                                  <option value="1">persiana</option>
+                                  <option value="2">lámpara</option>
+                                </select>
+                                <label>Tipo</label>
+                            </div>
+                            
+                        </div>
+                        <button id="btnSaludar" class="btn waves-effect waves-light button-small-view blue"><i class="material-icons l">edit</i>Modif</button>
+                    </div>
+
+                    <div class="col s4 m4 xl5 borde">
+                        <div class="=row">
+                            <div class="col s12 m12 xl12">
+                                <label>Nombre</label>
+                                <input type="text" id="cre_nombre">
+                            </div>
+                        </div>
+                        <div class="=row">
+                            <div class="col s12 m12 xl12">
+                                <label>Descripción</label>
+                                <input type="text" id="cre_descrip">
+                            </div>
+                        </div>
+                        <div class="=row">
+                            <div class="input-field col s12" id="cre_tipo">
+                                <select>
+                                  <option value="" disabled selected>Opciones</option>
+                                  <option value="0">velador</option>
+                                  <option value="1">persiana</option>
+                                  <option value="2">lámpara</option>
+                                </select>
+                                <label>Tipo</label>
+                            </div>
+                            
+                        </div>
+                        <button id="btncrear" class="btn waves-effect waves-light button-small-view blue"><i class="material-icons l">edit</i>Crear</button>                    
+                    </div>
+
+                    <div class="col s4 m4 xl2 borde">
+                        <div class="=row">
+                            <div class="col s12 m12 l12 xl12">
+                                <label>Ingrese ID a borrar</label>
+                                <input type="number" id="del_id">
+                            <span class="col s0 m0 xl0"></span>
+                            </div>
+                        </div>                             
+                        <button id="btndel" class="btn waves-effect waves-light button-small-view blue"><i class="material-icons l">delete</i>Borrar</button>                    
+                    </div>
+                
+                </div>
+
+
+
+            <div class="row">
+                <div class="col s4 m4 l2 xl2">
+                       
+                        
+                    <button id="btnDoble2" class="btn waves-effect waves-light button-view red"><i class="material-icons left">cloud</i>Doble</button>
+                    </div>
+                </div>
+                
             </div>	
         </main>
 		<!-- Page Footer -->
