@@ -26,17 +26,7 @@
                 </div>
             </nav>	
             <!-- Page Body -->
-            <div id="modal1" class="modal">
-                <div class="modal-content">
-                <label>validar nombre</label>
-                  <input type="text">
-                </div>
-                <div class="modal-footer">
-                  <a href="#!" class="modal-close waves-effect waves-green btn-flat" >Agree</a>
-                </div>
-              </div>
             <div class="container">
-                <button data-target="modal1" class="btn modal-trigger">Modal</button>
                 <div class="row">
                     <div class="col s6 m12 xl6 borde">
                         <div class="row">
@@ -48,21 +38,13 @@
                             <!-- text number password date-->
                         </div>
                     </div>
-                    <span class="col s0 m0 xl0" ></span>
-                    <div class="col s6 m12 xl6 input-field">
-                        <select id="tipo" class="icons" >
-                            <option value="" disabled selected>Seleecione una</option>
-                            <option value="1"  data-icon="./static/images/lightbulb.png">Option 1</option>
-                            <option value="2"  data-icon="./static/images/window.png">Option 2</option>
-                        </select>
-                          <label>Materialize Select</label>
-                    </div>
+                    
                 </div>
                 <div class="row">
 
                 </div>
                 <br/>
-                <h3 id="btnDoble">Smart Home Web Client!</h3>
+                <h3 id="btnDoble" value="45">Smart Home Web Client!</h3>
                 <br/>
                 <div id="caja" style="background-color: #4d4d85;"> 
              
@@ -77,70 +59,60 @@
                 <h4 id="abm">ABM de Dispositivos</h4>
                 <div class="row">
                     <div class="col s4 m4 xl5 borde">
-                        <div class="=row">
+                        <div class="row">
                             <div class="col s12 m12 l12 xl12">
                                 <label>Ingrese ID a modificar</label>
                                 <input type="number" id="mod_id">
                             <span class="col s0 m0 xl0"></span>
                             </div>                                                         
                         </div>
-                        <div class="=row">
+                        <div class="row">
                             <div class="col s12 m12 xl12">
                                 <label>Nuevo nombre</label>
                                 <input type="text" id="mod_nombre">
                             </div>
                         </div>
-                        <div class="=row">
+                        <div class="row">
                             <div class="col s12 m12 xl12">
                                 <label>Nueva descripción</label>
                                 <input type="text" id="mod_descrip">
                             </div>
                         </div>
-                        <div class="=row">
-                            <div class="input-field col s12" id="mod_tipo">
-                                <select>
-                                  <option value="" disabled selected>Opciones</option>
-                                  <option value="0">velador</option>
-                                  <option value="1">persiana</option>
-                                  <option value="2">lámpara</option>
-                                </select>
+                        <div class="row">
+                            <div class="col s12 m12 xl12">
                                 <label>Tipo</label>
+                                <input type="number" id="mod_tipo">
                             </div>
                             
                         </div>
-                        <button id="btnSaludar" class="btn waves-effect waves-light button-small-view blue"><i class="material-icons l">edit</i>Modif</button>
+                        <button id="btnmod" class="btn waves-effect waves-light button-small-view blue"><i class="material-icons l">edit</i>Modif</button>
                     </div>
 
                     <div class="col s4 m4 xl5 borde">
-                        <div class="=row">
+                        <div class="row">
                             <div class="col s12 m12 xl12">
                                 <label>Nombre</label>
                                 <input type="text" id="cre_nombre">
                             </div>
                         </div>
-                        <div class="=row">
+                        <div class="row">
                             <div class="col s12 m12 xl12">
                                 <label>Descripción</label>
                                 <input type="text" id="cre_descrip">
                             </div>
                         </div>
-                        <div class="=row">
-                            <div class="input-field col s12" id="cre_tipo">
-                                <select>
-                                  <option value="" disabled selected>Opciones</option>
-                                  <option value="0">velador</option>
-                                  <option value="1">persiana</option>
-                                  <option value="2">lámpara</option>
-                                </select>
+                        <div class="row">
+                            <div class="col s12 m12 xl12">
                                 <label>Tipo</label>
+                                <input type="number" id="cre_tipo">
                             </div>
                             
                         </div>
-                        <button id="btncrear" class="btn waves-effect waves-light button-small-view blue"><i class="material-icons l">edit</i>Crear</button>                    
+                        <button id="btncreate" class="btn waves-effect waves-light button-small-view blue"><i class="material-icons l">edit</i>Crear</button>                    
                     </div>
 
                     <div class="col s4 m4 xl2 borde">
-                        <div class="=row">
+                        <div class="row">
                             <div class="col s12 m12 l12 xl12">
                                 <label>Ingrese ID a borrar</label>
                                 <input type="number" id="del_id">

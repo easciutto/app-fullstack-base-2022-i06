@@ -29,8 +29,8 @@ class Main implements EventListenerObject, ResponseLister {
     public handlerResponse(status: number, response: string) {
         if (status == 200) {
             let respuestaString: string = response;
-            let respuesta: Array<Device> = JSON.parse(respuestaString); //Asigno a una lista de Device la respuesta convertida a JSON
-            alert (respuestaString);
+            let respuesta: Array<Device> = JSON.parse(respuestaString); //Asigno a una lista de Devices la respuesta convertida a JSON
+            //alert (respuestaString);
             let cajaDiv = document.getElementById("caja"); // recupero el elemento id "caja" de la pagina html y le asigno un objeto cajaDiv
             //Dentro de éste contenedor se incorporará la lista de dispositivos recupeada del servidor backend    
             cajaDiv.setAttribute("class", "talcoa");//seteo a cajaDiv la clase "talcoa"
@@ -124,7 +124,9 @@ class Main implements EventListenerObject, ResponseLister {
         //console.log(e.target);
         //console.log(e.type);
         let objetoEvento = <HTMLInputElement>e.target;
-        
+
+        //==[Evento para cargar la pantalla con el listado y estado de los dispositivos ]=======
+
         if (e.type == "click" && objetoEvento.id.startsWith("cb_")) {
         //Se discrimina el evento click de cada elemento switch de dispositivo.
             console.log(objetoEvento.id,objetoEvento.checked);
@@ -139,41 +141,104 @@ class Main implements EventListenerObject, ResponseLister {
             //con substring(3)corto los 3 primeros caracteres "cb_" de "objetoEvento.id"
 
             this.framework.ejecutarRequest("POST","http://localhost:8000/actualizar", this,datos);
+        }
 
-        } else if (e.type == "click" && objetoEvento.id.startsWith("rg_")) {
+        else if (e.type == "click" && objetoEvento.id.startsWith("rg_")) {
             //Se discrimina el evento click de cada elemento range de dispositivo.
-                //console.log(objetoEvento.id,objetoEvento.value);
-                console.log("Se ajustó rango");
+            //console.log(objetoEvento.id,objetoEvento.value);
+            console.log("Se ajustó rango");
     
-                //Construcción del JSON para enviar al servidor.
-                let id = objetoEvento.id.substring(3);
-                let estado = (document.getElementById("rg_" + id) as HTMLInputElement).value;
-                let datos = { "id": objetoEvento.id.substring(3), "state": estado };
-                //con substring(3)corto los 3 primeros caracteres "cb_" de "objetoEvento.id"
+            //Construcción del JSON para enviar al servidor.
+            let id = objetoEvento.id.substring(3);
+            let estado = (document.getElementById("rg_" + id) as HTMLInputElement).value;
+            let datos = { "id": objetoEvento.id.substring(3), "state": estado };
+            //con substring(3)corto los 3 primeros caracteres "cb_" de "objetoEvento.id"
     
-                this.framework.ejecutarRequest("POST","http://localhost:8000/actualizar", this,datos);    
+            this.framework.ejecutarRequest("POST","http://localhost:8000/actualizar", this,datos);           
+        }
+        //=======[Evento para "Modificar" un dispositivo ]========================================== 
         
-        }else if (e.type == "click") {
-      
-            
-            alert("Hola " +  this.listaPersonas[1].nombre +" ");    
-        } else {
-            
-            let elemento = <HTMLInputElement>this.framework.recuperarElemento("input1");
-            if (elemento.value.length>5) {
-                
-                
-                M.toast({html: 'se cargo la info'})
-            } else {
-                alert("falta cargar el nombre o es menor a 5");    
-            }
+        else if (e.type == "click" && objetoEvento.id == "btnmod") {  
+            console.log("Se solicita modificación de dispositivo");
+    
+            //Captura y validación de datos ingresados.
+            let idMod = <HTMLInputElement>this.framework.recuperarElemento("mod_id");
+            let nombreMod = <HTMLInputElement>this.framework.recuperarElemento("mod_nombre");
+            let descripMod = <HTMLInputElement>this.framework.recuperarElemento("mod_descrip");
+            let tipoMod = <HTMLInputElement>this.framework.recuperarElemento("mod_tipo");
+            //console.log(idMod.value);
 
+            if (idMod.value != null && nombreMod.value != null && descripMod.value != null && tipoMod.value != null){
+            //Construcción del JSON para enviar al servidor. Estado por dafault en 0
+                let datos = { "id": parseInt(idMod.value), "name": nombreMod.value, "description": descripMod.value, "state": 0, "type": parseInt(tipoMod.value)};
+                //console.log(datos);
+                this.framework.ejecutarRequest("POST","http://localhost:8000/modificar", this,datos); 
+            }
+            else {alert("datos ingresados incompletos")};
+        }
+        
+        //=======[Evento para "Crear" un dispositivo ]========================================== 
+        
+        else if (e.type == "click" && objetoEvento.id == "btncreate") {             
+            console.log("Se solicita creación de un dispositivo");
+
+            //Captura y validación de datos ingresados.
+            let nombreCre = <HTMLInputElement>this.framework.recuperarElemento("cre_nombre");
+            let descripCre = <HTMLInputElement>this.framework.recuperarElemento("cre_descrip");
+            let tipoCre = <HTMLInputElement>this.framework.recuperarElemento("cre_tipo");
+
+            //Construcción del JSON para enviar al servidor. Estado por dafault en 0
+            if (nombreCre.value == "" || descripCre.value == "" ){
+                alert("datos ingresados incompletos")
+            } else{
+            let datos = {"name": nombreCre.value, "description": descripCre.value, "state": 0, "type": parseInt(tipoCre.value)};
+            console.log(datos);
+            this.framework.ejecutarRequest("POST","http://localhost:8000/crear", this,datos);
+            }
             
         }
+
+        //=======[Evento para "Borrar" un dispositivo ]========================================== 
+        
+        else if (e.type == "click" && objetoEvento.id == "btndel") {             
+            console.log("Se solicita borrar un dispositivo");
+
+            //Captura y validación de datos ingresados.
+            let idDel = <HTMLInputElement>this.framework.recuperarElemento("del_id");
+            
+            //Construcción del JSON para enviar al servidor.
+            if (idDel.value == ""){
+                alert("datos ingresados incompletos")
+            } else{
+            let datos = {"id": parseInt(idDel.value)};
+            console.log(datos);
+            this.framework.ejecutarRequest("POST","http://localhost:8000/borrar", this,datos);
+            }  
+        }
+
+        //=======[Evento de desborde al darse un click ]========================================== 
+        
+        else if (e.type == "click") {
+            alert("Hola " +  this.listaPersonas[1].nombre +"Hay un error_continúa debugueando");    
+        } 
+
+        //=======[Evento de de prueba del dobleclik ]========================================== 
+        
+        else if(e.type == "dblclick" && objetoEvento.id == "btnDoble") {
+            alert("Se solicita Test de dobleclick");
+            let elemento = <HTMLInputElement>this.framework.recuperarElemento("input1");
+            if (elemento.value.length>5) {
+                console.log(elemento);
+                M.toast({html: 'se cargo la info'})
+            } else {
+                alert("falta cargar el nombre o es menor a 5"); 
+            }
+        }     
     }
 }
 
-//=======[  ]========================
+
+//=======[Se espera a que se termine de cargar la página htlm para recuperar elementos]========================
 
 window.addEventListener("load", () => {
     var elems = document.querySelectorAll('select'); //se incorpora para utilizar elementos de Materialize que requieren inicialización.
@@ -182,8 +247,11 @@ window.addEventListener("load", () => {
     var elems1 = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems1, "");
     //Recupero elementos de pantalla.
-    let btn = document.getElementById("btnSaludar");
+    let btnmod = document.getElementById("btnmod");
+    let btncre = document.getElementById("btncreate");
+    let btndel = document.getElementById("btndel");
     let btn2 = document.getElementById("btnDoble");
+    let btn3 =document.getElementById("input1");
     
     let main: Main = new Main();
     main.nombre = "Eduardo";
@@ -197,10 +265,11 @@ window.addEventListener("load", () => {
         texto.innerHTML += main.listaPersonas[i].mostrar();    
     };*/
    
-   
-
     //Asociación de tipo de evento con la referencia de la función a ejecutar para cada botón.
     btn2.addEventListener("dblclick", main);
-    btn.addEventListener("click", main);
+    btnmod.addEventListener("click", main);
+    btncre.addEventListener("click", main);
+    btndel.addEventListener("click", main);
+    //btn3.addEventListener("dblclick", main);
 
 });
