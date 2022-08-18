@@ -219,7 +219,10 @@ class Main implements EventListenerObject, ResponseLister {
         //=======[Evento de desborde al darse un click ]========================================== 
         
         else if (e.type == "click") {
-            alert("Hola " +  this.listaPersonas[1].nombre +"Hay un error_continúa debugueando");    
+            alert("Hola " +  this.listaPersonas[1].nombre +"Hay un error_continúa debugueando");
+            let test_2 = <HTMLElement>this.framework.recuperarElemento("test");
+            console.log(test_2);
+            
         } 
 
         //=======[Evento de de prueba del dobleclik ]========================================== 
@@ -251,7 +254,8 @@ window.addEventListener("load", () => {
     let btncre = document.getElementById("btncreate");
     let btndel = document.getElementById("btndel");
     let btn2 = document.getElementById("btnDoble");
-    let btn3 =document.getElementById("input1");
+    let usrInput =document.getElementById("input1");
+    let btntest =document.getElementById("btntest");
     
     let main: Main = new Main();
     main.nombre = "Eduardo";
@@ -270,6 +274,7 @@ window.addEventListener("load", () => {
     btnmod.addEventListener("click", main);
     btncre.addEventListener("click", main);
     btndel.addEventListener("click", main);
+    btntest.addEventListener("click", main);
     //btn3.addEventListener("dblclick", main);
 
 });
