@@ -17,7 +17,7 @@ class Main implements EventListenerObject, ResponseLister {
         this.framework.ejecutarRequest("GET", "http://localhost:8000/devices", this)
  
         this.listaPersonas.push(new Usuario("Juan", 12, "jPerez"));
-        this.listaPersonas.push(new Administrador("Pedro", 35));
+        this.listaPersonas.push(new Administrador("Eduardo", 47));
         this.listaPersonas.push(new Persona("S", 12));
         this.etidadesAcciones.push(new Usuario("Juan", 12, "jPerez"));
         this.etidadesAcciones.push(new Administrador("Juan", 12));
@@ -219,9 +219,18 @@ class Main implements EventListenerObject, ResponseLister {
         //=======[Evento de desborde al darse un click ]========================================== 
         
         else if (e.type == "click") {
-            alert("Hola " +  this.listaPersonas[1].nombre +"Hay un error_continúa debugueando");
-            let test_2 = <HTMLElement>this.framework.recuperarElemento("test");
-            console.log(test_2);
+            console.log("click de desborde")
+            let test_2 = <HTMLInputElement>this.framework.recuperarElemento("input1");
+            //let test_2 = document.getElementById("input1");
+            console.log(test_2.value);
+            if (test_2.value == this.listaPersonas[1].nombre){
+                alert("Hola " +  this.listaPersonas[1].nombre +", " + this.listaPersonas[1].mostrar())
+
+
+            } else{ alert("Hola " +  test_2.value +", no eres un usuario registrado")};
+
+            //let test_2 = <HTMLElement>this.framework.recuperarElemento("test");
+            //console.log(test_2.childNodes);
             
         } 
 
@@ -231,7 +240,7 @@ class Main implements EventListenerObject, ResponseLister {
             alert("Se solicita Test de dobleclick");
             let elemento = <HTMLInputElement>this.framework.recuperarElemento("input1");
             if (elemento.value.length>5) {
-                console.log(elemento);
+                console.log(elemento.value);
                 M.toast({html: 'se cargo la info'})
             } else {
                 alert("falta cargar el nombre o es menor a 5"); 
@@ -254,13 +263,20 @@ window.addEventListener("load", () => {
     let btncre = document.getElementById("btncreate");
     let btndel = document.getElementById("btndel");
     let btn2 = document.getElementById("btnDoble");
-    let usrInput =document.getElementById("input1");
     let btntest =document.getElementById("btntest");
+    let texto = document.getElementById("textarea_1");
     
     let main: Main = new Main();
     main.nombre = "Eduardo";
-    
-    let texto = document.getElementById("textarea_1");
+
+    //Asociación de tipo de evento con la referencia de la función a ejecutar para cada botón.
+    btn2.addEventListener("dblclick", main);
+    btnmod.addEventListener("click", main);
+    btncre.addEventListener("click", main);
+    btndel.addEventListener("click", main);
+    btntest.addEventListener("click", main);
+
+    //==== [Pruebas de debug] ==================
     //texto.innerHTML = main.listaPersonas[0].mostrar();
     /*for (let i in main.etidadesAcciones) {
         texto.innerHTML += JSON.stringify(main.etidadesAcciones[i]);    
@@ -268,13 +284,5 @@ window.addEventListener("load", () => {
    for (let i in main.listaPersonas) {
         texto.innerHTML += main.listaPersonas[i].mostrar();    
     };*/
-   
-    //Asociación de tipo de evento con la referencia de la función a ejecutar para cada botón.
-    btn2.addEventListener("dblclick", main);
-    btnmod.addEventListener("click", main);
-    btncre.addEventListener("click", main);
-    btndel.addEventListener("click", main);
-    btntest.addEventListener("click", main);
-    //btn3.addEventListener("dblclick", main);
-
+    
 });

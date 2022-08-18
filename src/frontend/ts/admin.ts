@@ -7,7 +7,7 @@ class Administrador extends Persona implements Acciones{
 
   public mostrar(): string {
    
-    return "soy admin "+super.mostrar();
+    return "eres usuario administador ("+super.mostrar() + ")";
   }
 
   //Se define una respuesta para cada una de las funciones de la interfaz Acciones.
