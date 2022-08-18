@@ -91,6 +91,7 @@ app.get('/devices/', function(req, res) {
         setTimeout(function(){
             res.send(JSON.stringify(respuesta)).status(200);
         }, 1000);
+        console.log(respuesta);
     });
 });
    
@@ -134,6 +135,7 @@ app.post("/actualizar",function(req,res){
             }
             //console.log(respuesta);
             res.send("actualizo").status(200);
+            console.log(respuesta);
         });
     };
 });
@@ -154,6 +156,7 @@ app.post("/modificar",function(req,res){
             //console.log(respuesta);
 
             res.send("actualizo").status(200);
+            console.log(respuesta);
         });
     };
 });

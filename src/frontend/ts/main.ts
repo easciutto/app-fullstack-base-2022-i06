@@ -30,7 +30,7 @@ class Main implements EventListenerObject, ResponseLister {
         if (status == 200) {
             let respuestaString: string = response;
             let respuesta: Array<Device> = JSON.parse(respuestaString); //Asigno a una lista de Devices la respuesta convertida a JSON
-            //alert (respuestaString);
+            console.log(respuesta);
             let cajaDiv = document.getElementById("caja"); // recupero el elemento id "caja" de la pagina html y le asigno un objeto cajaDiv
             //Dentro de éste contenedor se incorporará la lista de dispositivos recupeada del servidor backend    
             cajaDiv.setAttribute("class", "talcoa");//seteo a cajaDiv la clase "talcoa"

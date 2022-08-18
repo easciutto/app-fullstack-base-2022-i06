@@ -156,41 +156,123 @@ En esta sección podés ver los detalles específicos de funcionamiento del cód
 
 <details><summary><b>Mira los detalles de implementación</b></summary><br>
 
-### Agregar un dispositivo
+### Detalles de la aplicación webb
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+Desde un browser, ingresando a la url : http://localhost:8000/, se visualiza la aplicación webb.
+
+EN la parte superior de la pantalla encontrarás un campo para ingresar el usuario. Éste es simplemente ilustrativo, ya que no realiza ninguna acción de restricción sobre el de uso de la aplicación.
+
+Por debajo continúa una sección en la cual se listan los dispositivos dados de alta en la base de datos. Aquí podrás visualizar información de cada dispositivo y su estado. Además, ya sea mediante un switch o un slider (según sea el tipo de  dispositivo) podrás ajustar su estado y persistir dicha acción en la base de datos.
+
+![architecture](doc/pantalla_1.png)
+
+Finalmente en la última la sección de la página, escontrarás una serie de campos para gestionar el ABM (altas, bajas, modificaciones) de los dispositivos.
+Para el caso de crear un dispositivo nuevo, deberás especificar un nombre, una descripción y el tipo de dispositivo que decidiste agregar. Una vez que hayas completado los campos, debés pulsar el botón "Crear". Recibirás un mensaje en la pantalla como resultado de ésta última acción, tanto sea para notificar una transacción exitosa, como para advertirte de algún porblema u error en la carga de datos.
+De modo similar, podrás editar cualquier propiedad de un dispositivo existente o borrarlo.
+
+![architecture](doc/pantalla_2.png)
 
 ### Frontend
 
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+El archivo principal del cliente HTML es 'index.html'. En él está toda la configuración de estilo y formato de cómo se presenta la información de la aplicación webb.
+
+El código Typescript desarrollado se encuentra el la carpeta './frontend/ts'. El archivo principal del código es 'main.ts' En éste archivo se crea una clase 'Main' dentro de la cual se estructuran las partes más importantes del código. La clase Main requiere implementar una serie de Interfaces y Clases secundarias, las cuales se describen a continuación.
+
+El archivo 'persona.ts' crea la clase Persona, la cual permite crear objetos con los atributos "nombre" y "edad" y también implementar el método mostrar() para poder recuperar la información de los mismos.
+
+El archivo 'user.ts' crea la clase Usuario, que hereda la clase Persona e implementa la interfaz Acciones. Las propiedades de un objeto clase Usuario son: "nombre" y "edad" (heredados de la clase Persona) y "nombre de usuario".
+
+El archivo 'admin.ts' crea la clase Administrador, que hereda la clase Persona e implementa la interfaz Acciones. Las propiedades de un objeto clase Administrador son las mismas que heredé de la clase Persona: "nombre" y "edad".
+
+El archivo 'acciones.ts' crea la Interfaz Acciones, que define las acciones posibles a ser realizadas por los administradores y los usuarios.
+
+El archivo 'device.ts' define la estructura de pares "clave":"valor" que debe respetarse y ser coincidente con el formato de respuesta del servidor ante una petición GET.
+
+El archivo 'ResponseLister.ts' crea la interfaz ResponseLister, que permite manejar las respuestas del servidor, tanto para cuando se utiliza un método GET, como para cuando se utiliza el método POST.
+
+El archivo 'framework.ts' crea la clase Framework, la cual aplica tecnología Ajax para realizar una petición asíncrona al servidor backend, mediante el objeto XMLHttpRequest. También en ésta clase definimos un método para sistematizar la acción de recuperar un elemento de la página HTML.
+
+Volviendo al archivo 'main.ts', comentaré brevemente cada bloque del código. Lo primero es declarar las implementaciones de interfaces y clases. Desde el constructor creamos algunos usuarios y administradores, aunque en el estadío actual de desarrollo, su uso no tiene relevancia para el establecimiento de los métodos contra el servidor. 
+
+A continuación, se desarrolla un bloque de código que crea el Lister GET para traer los dispositivos a la pantalla. Aquí se va construyendo el objeto 'listaDispositivos' con la información aportada por la respuesta del GET al servidor, para luego asignarsela al elemento de pantalla 'CajaDiv' utilizando la propiedad 'innerHTML'.
+
+Luego se desarrolla un bloque de código que crea el Lister para recibir respuesta del servidor al POST de actualización de estado de los dispositivos en pantalla.
+
+El bloque siguiente crea el Método para gestionar y producir una acción a los distintos eventos ejecutados desde la pantalla frontend, que se dan al hacer "click" en los botones. El detalle de cada gestión de evento está documentada en el mismo código.
+
+Finalmente el último bloque cumple la función de esperar la carga completa de la pagina HTML, para posteriormente hacer el recupero de los elementos de pantalla a distintos objetos mediante el método 'document.getElementById'. También establecer la sociación de tipo de evento con la referencia de la función a ejecutar para cada botón.
+
 
 ### Backend
 
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+Ésta implementación utiliza el paquete de funcionalidades "express" para facilitar la creación de los métodos GET y POST utilizados. También se implementa el paquete "utils", para realizar la interación con la base de datos, mediante consultas (Querys).
+
+En una primera etapa de puesta a punto y pruebas, podés utilizar el archivo 'datos.js', el cual tiene cargada una lista de dispositivos con sus parámetros. En mi caso, me permitió ajustar el funcionamiento de los primeros métodos GET y la interacción con el frontend. Luego, al establecer la conexión con la base de datos, ya no resultó necesario, por consiguiente quedó desabilitado.
+
+El primer método GET creado, es el utilizado por el frontend para popular la pantalla con la lista de Dispositivos. Se utiliza la url: http://localhost:8000/devices/. Se realiza una consulta SQL de todos los dispositivos cargados en la base de datos y se envía una respuesta a la solicitud del frontend con un status=200. Por el contrario, si hubiese algún error en el procesamiento del request, se envía un status=400.
+
+El segundo método GET se utiliza para solicitar información de un único dispositivo, cuyo 'id' es pasado como parámetro en la url. Por ejemplo, si interesa recuperar el dispositivo id = 1  , la url es : http://localhost:8000/devices/1. Por consiguiente, éste método efectúa una consulta SQL selectiva a la base de datos, para traer sólo información del 'id' requerido. Posteriormente envía la respuesta con el parámetro status =200 si resultó exitosa, o por el cotrario status =400 al detectar un error en la misma.
+
+Continúan 4 métodos POST. El primero procesa los cambios de estado de los dispositivos que se pueden ajustar desde la pantalla de la aplicación web. La url que espera el servidor para éste caso es: http://localhost:8000/actualizar , y en el cuerpo (body) de la solicitud, el frontend envía el 'id' y el 'state' (estado) a ser actualizado en la base de datos. Al igual que con los métodos GET y el resto de los métodos POST,  se realiza una validación y se responde con el correspondiente valor de status.
+
+El resto de los métodos POST se solicitan desde la sección ABM de la aplicación web y nos permiten realizar modificaciones, altas o borrado de dispositivos. Las url son: http://localhost:8000/modificar, http://localhost:8000/crear, http://localhost:8000/borrar respectivamente. Al igual que lo descripto para el primer POST, en el body de la solicitud se envían los parámetros respectivos para realizar los cambios en la base de datos.
 
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
-Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
+A continuación verás la lista de los endpoints implementados con sus características.
 
 1) Devolver el estado de los dispositivos.
 
-```json
-{
     "method": "get",
     "request_headers": "application/json",
     "request_body": "",
-    "response_code": 200,
-    "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
-    },
-}
-``` 
+    "response_code": 200
+    "response_body": String "{ "id": 1, "name": "Lampara 1", "description": "Luz cocina", "state": 1, "type": 1} ......"
+
+2) Devolver el estado de un dispositivo seleccionado en la url.
+
+    "method": "get",
+    "url": "http://localhost:8000/devices/1"
+    "request_headers": "application/json",
+    "request_body": "",
+    "response_code": 200
+    "response_body": String "{ "id": 1, "name": "Lampara 1", "description": "Luz cocina", "state": 1, "type": 1}"
+
+3) Actualizar estado de un dispositivo.
+
+    "method": "post",
+    "url": "http://localhost:8000/devices/actualizar"
+    "request_headers": "application/json",
+    "request_body": {"id":1, "state":0},
+    "response_code": 200
+    "response_body": OkPacket {fieldCount: 0, affectedRows: 1, insertId: 0, serverStatus: 2, warningCount: 0, message: '(Rows matched: 1  Changed: 1  Warnings: 0', protocol41: true, changedRows: 1 }
+
+4) Modificar atributos de un dispositivo.
+ 
+    "method": "post",
+    "url": "http://localhost:8000/devices/modificar"
+    "request_headers": "application/json",
+    "request_body": { "id": 1, "name": "Lampara 1", "description": "Luz cocina", "state": 1, "type": 1},
+    "response_code": 200
+    "response_body": OkPacket {fieldCount: 0, affectedRows: 1, insertId: 0, serverStatus: 2, warningCount: 0, message: '(Rows matched: 1  Changed: 1  Warnings: 0', protocol41: true, changedRows: 1 }
+
+5) Dar de alta un dispositivo.
+
+    "method": "post",
+    "url": "http://localhost:8000/devices/crear"
+    "request_headers": "application/json",
+    "request_body": { "name": "Lampara 1", "description": "Luz cocina", "state": 1, "type": 1},
+    "response_code": 200
+    "response_body": OkPacket {fieldCount: 0, affectedRows: 1, insertId: 12, serverStatus: 2, warningCount: 0, message: '', protocol41: true, changedRows: 0 }
+
+6) Eliminar un dispositivo.
+
+    "method": "post",
+    "url": "http://localhost:8000/devices/borrar"
+    "request_headers": "application/json",
+    "request_body": { "id": 12},
+    "response_code": 200
+    "response_body": OkPacket {fieldCount: 0, affectedRows: 1, insertId: 0, serverStatus: 2, warningCount: 0, message: '', protocol41: true, changedRows: 0 }
 
 </details>
 
